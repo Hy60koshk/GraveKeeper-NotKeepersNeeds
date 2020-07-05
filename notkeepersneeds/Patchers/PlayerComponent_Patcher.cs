@@ -17,12 +17,6 @@ namespace NotKeepersNeeds {
 					curhp += opts.HealthRegenPerSecond * Time.deltaTime;
 					player.hp = curhp < 100 ? curhp : 100;
 				}
-				/*if (player.energy != opts.SavedEnergy) {
-					float mult = player.energy > opts.SavedEnergy ? opts.EnergyReplenMult : opts.EnergyDrainMult;
-					float newenergy = opts.SavedEnergy - (opts.SavedEnergy - player.energy) * mult;
-					player.energy = newenergy;
-					opts.SavedEnergy = newenergy;
-				}*/
 			}
 		}
 	}

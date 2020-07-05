@@ -19,13 +19,14 @@ namespace NKN_Configurator {
 		private static string cfgPath_ = "config.txt";
 
 		private static Dictionary<string, string[]> optsOnPage_ = new Dictionary<string, string[]>() {
-			{ "System", new string[] { "TimeMult", "SleepTimeMult", "UnconditionalSleep", "InteractionSpeed", "CraftingSpeed",
+			{ "System", new string[] { "TimeMult", "SleepTimeMult", "TimeScaleSwitchKey", "InteractionSpeed", "CraftingSpeed",
 				"InflationAmount" , "DullInventoryMusic"} },
 			{ "Sprint", new string[] { "EnergyDrainMult" , "EnergyReplenMult", "DefaultSpeed", "SprintSpeed",
 				"EnergyForSprint", "SprintKey", "SprintToggle"} },
-			{ "HP", new string[] { "RegenMult", "DmgMult", "GlobalDmgMult"
+			{ "HP", new string[] { "UnconditionalSleep", "RegenMult", "DmgMult", "GlobalDmgMult"
 				, "HealthRegen", "HealIfTired", "HealthRegenPerSecond"} },
-			{ "Orbs", new string[] { "OrbsMult", "RoundDown", "OrbsConstAddIfZero", "OrbsConstant"} }
+			{ "Orbs", new string[] { "OrbsMult", "RoundDown", "OrbsConstAddIfZero", "OrbsConstant"} },
+			{ "SystemKeys", new string[] { "AddMoneyKey", "ResetPrayKey", "AllowSaveEverywhere", "SaveGameKey", "ConfigReloadKey"} }
 		};
 		private static short panelIdx_ = 0;
 		private static List<CfgPanel> cfgPanels_ = new List<CfgPanel>(3);
@@ -102,18 +103,6 @@ namespace NKN_Configurator {
 					else if (options_.OptionsParams.ContainsKey(opt)) {
 						Add(new CfgComboboxComponent(opt, false, options_.OptionsParams[opt]));
 					}
-					/*if (options_.FloatParams.ContainsKey(opt)) {
-						Add(new CfgFloatComponent(opt, options_.FloatParams[opt]));
-					}
-					else if (options_.BoolParams.ContainsKey(opt)) {
-						Add(new CfgBoolComponent(opt, options_.BoolParams[opt]));
-					}
-					else if (options_.ArrayParams.ContainsKey(opt)) {
-						Add(new CfgIntArrayComponent(opt, options_.AdditionalLabelKeysForParams[opt], options_.ArrayParams[opt]));
-					}
-					else if (options_.OptionsParams.ContainsKey(opt)) {
-						Add(new CfgComboboxComponent(opt, false, options_.AvailableOptionsForParams[opt], options_.OptionsParams[opt]));
-					}*/
 				}
 				Font btnFont = new Font("Verdana", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
 				Size btnSize = new Size(128, 42);
@@ -217,7 +206,7 @@ namespace NKN_Configurator {
 
 				reset_ = new Button();
 				reset_.Anchor = AnchorStyles.None;
-				reset_.Cursor = Cursors.Hand;
+				//reset_.Cursor = Cursors.Hand;
 				reset_.Name = "reset" + name;
 				reset_.Size = new Size(100, 24);
 				reset_.Text = selectedLocale_["SetDefault"];
@@ -443,6 +432,11 @@ namespace NKN_Configurator {
 		}
 
 		private class Options {
+			private static string[] sysKeyOptions_ = new string[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"
+				, "Backspace", "ScrollLock", "Pause", "PageUp", "PageDown", "Insert", "Delete", "Home", "End"
+				, "Keypad0", "Keypad1", "Keypad2", "Keypad3", "Keypad4", "Keypad5", "Keypad6", "Keypad7", "Keypad8", "Keypad9"
+				, "KeypadDivide", "KeypadMultiply", "KeypadMinus", "KeypadPlus", "KeypadPeriod"
+			};
 
 			private Dictionary<string, FloatOption> floatParams_ = new Dictionary<string, FloatOption>() {
 				{ "DmgMult", new FloatOption() }
@@ -469,6 +463,7 @@ namespace NKN_Configurator {
 				, { "HealthRegen", new BooleanOption() }
 				, { "HealIfTired", new BooleanOption() }
 				, { "UnconditionalSleep", new BooleanOption() }
+				, { "AllowSaveEverywhere", new BooleanOption() }
 			};
 			private Dictionary<string, IntArrayOption> arrayParams_ = new Dictionary<string, IntArrayOption>() {
 				{ "OrbsConstant", new IntArrayOption(
@@ -480,6 +475,11 @@ namespace NKN_Configurator {
 					"LeftShift", new string[] { "LeftShift", "LeftControl", "LeftAlt", "Space"
 					, "RightShift", "RightControl", "RightAlt", "Z", "X", "CapsLock", "Backspace", "ScrollLock", "Pause", "PageUp" }
 				) }
+				, { "TimeScaleSwitchKey", new StringDropOption("F4", sysKeyOptions_) }
+				, { "SaveGameKey", new StringDropOption("F5", sysKeyOptions_) }
+				, { "ConfigReloadKey", new StringDropOption("F6", sysKeyOptions_) }
+				, { "AddMoneyKey", new StringDropOption("F2", sysKeyOptions_) }
+				, { "ResetPrayKey", new StringDropOption("F8", sysKeyOptions_) }
 			};
 			public Dictionary<string, FloatOption> FloatParams => floatParams_;
 			public Dictionary<string, BooleanOption> BoolParams => boolParams_;
@@ -523,92 +523,7 @@ namespace NKN_Configurator {
 			}
 		}
 
-		/*private class Options {
-
-			private Dictionary<string, double> floatParams_ = new Dictionary<string, double>() {
-				{ "DmgMult", 1 }
-				, { "GlobalDmgMult", 1 }
-				, { "RegenMult", 1 }
-				, { "HealthRegenPerSecond", 0.5 }
-				, { "DefaultSpeed", 1 }
-				, { "SprintSpeed", 2 }
-				, { "EnergyDrainMult", 1 }
-				, { "EnergyReplenMult", 1 }
-				, { "EnergyForSprint", 0.01 }
-				, { "CraftingSpeed", 1 }
-				, { "InteractionSpeed", 1 }
-				, { "TimeMult", 1 }
-				, { "SleepTimeMult", 1 }
-				, { "OrbsMult", 1 }
-				, { "InflationAmount", 1 }
-			};
-			private Dictionary<string, bool> boolParams_ = new Dictionary<string, bool>() {
-				{ "OrbsConstAddIfZero", false }
-				, { "SprintToggle", false }
-				, { "RoundDown", false }
-				, { "DullInventoryMusic", false }
-				, { "HealthRegen", false }
-				, { "HealIfTired", false }
-				, { "UnconditionalSleep", false }
-			};
-			private Dictionary<string, int[]> arrayParams_ = new Dictionary<string, int[]>() {
-				{ "OrbsConstant", new int[]{ 0, 0, 0 } }
-			};
-			private Dictionary<string, string[]> additionalLabelKeysForParams_ = new Dictionary<string, string[]>() {
-				{ "OrbsConstant", new string[] { "OCGreen", "OCBlue" } }
-			};
-			private Dictionary<string, string> optionsParams_ = new Dictionary<string, string>() {
-				{ "SprintKey", "LeftShift" }
-			};
-			private Dictionary<string, string[]> availableOptionsForParams_ = new Dictionary<string, string[]>() {
-				{ "SprintKey", new string[] { "LeftShift", "LeftControl", "LeftAlt", "Space"
-					, "RightShift", "RightControl", "RightAlt", "Z", "X", "CapsLock", "Backspace", "ScrollLock", "Pause", "PageUp" } }
-			};
-			public Dictionary<string, double> FloatParams => floatParams_;
-			public Dictionary<string, bool> BoolParams => boolParams_;
-			public Dictionary<string, int[]> ArrayParams => arrayParams_;
-			public Dictionary<string, string> OptionsParams => optionsParams_;
-			public Dictionary<string, string[]> AdditionalLabelKeysForParams => additionalLabelKeysForParams_;
-			public Dictionary<string, string[]> AvailableOptionsForParams => availableOptionsForParams_;
-
-			public Options() { }
-
-			public Options(Dictionary<string, string> rawValues) {
-				double fvalue = 0;
-				List<string> keyslist = floatParams_.Keys.ToList();
-				foreach (string key in keyslist) {
-					if (rawValues.ContainsKey(key)) {
-						if (double.TryParse(rawValues[key], out fvalue)) {
-							floatParams_[key] = fvalue;
-						}
-					}
-				}
-				keyslist = boolParams_.Keys.ToList();
-				foreach (string key in keyslist) {
-					if (rawValues.ContainsKey(key)) {
-						string bvalue = rawValues[key];
-						if (bvalue == "1" || bvalue.ToLower() == "true") {
-							boolParams_[key] = true;
-						}
-					}
-				}
-				if (rawValues.ContainsKey("SprintKey")) {
-					optionsParams_["SprintKey"] = rawValues["SprintKey"];
-				}
-				if (rawValues.ContainsKey("OrbsConstant")) {
-					string[] ocValues = rawValues["OrbsConstant"].Split(':');
-					int[] orbsConst = arrayParams_["OrbsConstant"];
-					int ocVal = 0;
-					for (int i = 0; (i < ocValues.Length) && (i < 3); i++) {
-						if (int.TryParse(ocValues[i], out ocVal)) {
-							orbsConst[i] = ocVal;
-						}
-					}
-				}
-			}
-		}*/
-
-			private static void btnHelp_Click(object sender, EventArgs e) {
+		private static void btnHelp_Click(object sender, EventArgs e) {
 			MessageBox.Show(selectedLocale_[((Control)sender).Name]);
 		}
 		private static void btnNext_Click(object sender, EventArgs e) {
@@ -662,7 +577,8 @@ namespace NKN_Configurator {
 			cfgPanels_.Add(new CfgPanel("System"));
 			cfgPanels_.Add(new CfgPanel("Sprint"));
 			cfgPanels_.Add(new CfgPanel("HP"));
-			cfgPanels_.Add(new CfgPanel("Orbs", true));
+			cfgPanels_.Add(new CfgPanel("Orbs"));
+			cfgPanels_.Add(new CfgPanel("SystemKeys", true));
 			cfgPanels_[0].Show();
 		}
 	}

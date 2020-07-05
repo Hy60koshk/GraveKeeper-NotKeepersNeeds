@@ -12,24 +12,13 @@ namespace NotKeepersNeeds {
 				return true;
 			}
 			Config.Options opts = Config.GetOptions();
-			bool isSprintPressed = Input.GetKey(opts.SprintKey);
-			if (opts.SprintToggle) {
-				if (isSprintPressed && !opts._SprintStillPressed) {
-					isSprintPressed = opts._SprintToggleOn = !opts._SprintToggleOn;
-					opts._SprintStillPressed = true;
-				}
-				else {
-					if (!isSprintPressed) {
-						opts._SprintStillPressed = false;
-					}
-					isSprintPressed = opts._SprintToggleOn;
-				}
-			}
 
 			float speed = __instance.wgo.data.GetParam("speed", 0.0f);
 			if (speed > 0) {
 				speed = 3.3f + __instance.wgo.data.GetParam("speed_buff", 0.0f);
 				float energydt = delta_time * opts.EnergyForSprint;
+				bool isSprintPressed = opts.SprintToggle ? opts.SprintKey.IsToggled() : Input.GetKey(opts.SprintKey.Key);
+
 				if (isSprintPressed && (MainGame.me.player.energy >= energydt)) {
 					__instance.SetSpeed(speed * opts.SprintSpeed);
 					if (energydt > 0) {

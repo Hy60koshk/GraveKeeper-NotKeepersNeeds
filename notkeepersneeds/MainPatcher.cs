@@ -14,6 +14,71 @@ namespace NotKeepersNeeds {
 	public class Config {
 		private static Options options_ = null;
 
+		public class SinglePressKey {
+			public KeyCode Key => key_;
+			private KeyCode key_;
+			private bool isPressed_ = false;
+
+			public SinglePressKey(KeyCode key) {
+				key_ = key;
+			}
+			public void ChangeKey(KeyCode key) {
+				key_ = key;
+			}
+			public virtual bool IsPressed() {
+				if (Input.GetKey(Key)) {
+					if (!isPressed_) {
+						isPressed_ = true;
+						return true;
+					}
+				}
+				else {
+					isPressed_ = false;
+				}
+				return false;
+			}
+		}
+
+		public class ToggleKey : SinglePressKey {
+			private bool toggled_ = false;
+			public bool Toggled => toggled_;
+
+			public ToggleKey(KeyCode key) : base(key) { }
+
+			public bool IsToggled() {
+				IsPressed();
+				return toggled_;
+			}
+
+			public override bool IsPressed() {
+				if (base.IsPressed()) {
+					toggled_ = !toggled_;
+					return true;
+				}
+				return false;
+			}
+		}
+
+		public class SwitchKey : SinglePressKey {
+			private int state_ = 0;
+			private int stateNum_ = 2;
+			public int State => state_;
+
+			public SwitchKey(KeyCode key) : base(key) { }
+
+			public SwitchKey(KeyCode key, int statenum) : base(key) {
+				stateNum_ = statenum;
+			}
+
+			public override bool IsPressed() {
+				if (base.IsPressed()) {
+					state_ = ++state_ % stateNum_;
+					return true;
+				}
+				return false;
+			}
+		}
+
 		public class Options {
 			public float DmgMult = 1;
 			public float GlobalDmgMult = 1;
@@ -34,17 +99,21 @@ namespace NotKeepersNeeds {
 			public bool RoundDown = false;
 			public bool DullInventoryMusic = false;
 			public bool UnconditionalSleep = false;
+			public bool AllowSaveEverywhere = false;
 			public float InflationAmount = 1;
 			public int[] OrbsConstant = new int[] { 0, 0, 0 };
-			public KeyCode SprintKey = KeyCode.LeftShift;
-			//public KeyCode ConfigReloadKey = KeyCode.Semicolon;
+
+			public ToggleKey SprintKey = new ToggleKey(KeyCode.LeftShift);
+			public SwitchKey TimeScaleSwitchKey = new SwitchKey(KeyCode.F4);
+
+			public SinglePressKey SaveGameKey = new SinglePressKey(KeyCode.F5);
+			public SinglePressKey ConfigReloadKey = new SinglePressKey(KeyCode.F6);
+			public SinglePressKey AddMoneyKey = new SinglePressKey(KeyCode.F2);
+			public SinglePressKey ResetPrayKey = new SinglePressKey(KeyCode.F8);
 
 			public bool HealthRegen = false;
 			public bool HealIfTired = false;
 			public float HealthRegenPerSecond = 0.5f;
-
-			public bool _SprintToggleOn = false;
-			public bool _SprintStillPressed = false;
 
 			public int GetOrbCount(int orig, int idx) {
 				if (_OrbsHasConst && (OrbsConstAddIfZero || orig > 0)) {
@@ -166,13 +235,36 @@ namespace NotKeepersNeeds {
 								break;
 							case "SprintKey":
 								try {
-									KeyCode code = Enum<KeyCode>.Parse(pair[1]);
-									options_.SprintKey = code;
+									options_.SprintKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
+								}
+								catch { }
+								break;
+							case "SaveGameKey":
+								try {
+									options_.SaveGameKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
+								}
+								catch { }
+								break;
+							case "ConfigReloadKey":
+								try {
+									options_.ConfigReloadKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
+								}
+								catch { }
+								break;
+							case "AddMoneyKey":
+								try {
+									options_.AddMoneyKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
+								}
+								catch { }
+								break;
+							case "ResetPrayKey":
+								try {
+									options_.ResetPrayKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
 								}
 								catch { }
 								break;
 							case "OrbsConstant": {
-									string[] ocValues = pair[1].Split(':');
+									string[] ocValues = rawVal.Split(':');
 									options_._OrbsHasConst = true;
 									int ocVal = 0;
 									for (int i = 0; (i < ocValues.Length) && (i < options_.OrbsConstant.Length); i++) {
@@ -202,6 +294,9 @@ namespace NotKeepersNeeds {
 								break;
 							case "UnconditionalSleep":
 								options_.UnconditionalSleep = parseBool(rawVal);
+								break;
+							case "AllowSaveEverywhere":
+								options_.AllowSaveEverywhere = parseBool(rawVal);
 								break;
 						}					
 					}

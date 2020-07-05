@@ -112,6 +112,27 @@ namespace NKN_Configurator {
 				, { "helpOrbsConstAddIfZero", "By default, 'Tech orb drop addition' won't be applied to orb types that weren't dropped at all." +
 					"\r\n\r\nEnable this option to always apply additions." +
 					"\r\n\r\nFor example, when you should get greens and reds only, and your 'Tech orb drop addition' has 2 orbs in blue section, you won't get any blues by default, but you would have got 2 blues if this setting was enabled." }
+
+				, { "TimeScaleSwitchKey", "The key to fast switch timescale" }
+				, { "helpTimeScaleSwitchKey", "Press this key to toggle between normal timescale and the ten times faster one (thus, between 'default * TimeMult' and 'default * TimeMult * 10')." +
+					"\r\n\r\nI provide a short list here, but by editing the cfg manually you can set any value that is a valid Unity KeyCode enum constant name." }
+				, { "ResetPrayKey", "The key to reset weekly pray count" }
+				, { "helpResetPrayKey", "Press this key after praying to reset the pray count, allowing you to pray once again. This allows you to pray numerous times a day, yet only at Pride." +
+					"\r\n\r\nI provide a short list here, but by editing the cfg manually you can set any value that is a valid Unity KeyCode enum constant name." }
+				, { "AddMoneyKey", "The key to add 1 gold coin with" }
+				, { "helpAddMoneyKey", "Press this key to add 1 gold coin." +
+					"\r\n\r\nI provide a short list here, but by editing the cfg manually you can set any value that is a valid Unity KeyCode enum constant name." }
+
+				, { "AllowSaveEverywhere", "Allow fast save" }
+				, { "helpAllowSaveEverywhere", "Allows you to press the key to save the game from anywhere, anytime. The functionality is not properly tested and not really recommended, so this option is disabled by default." }
+
+				, { "SaveGameKey", "The key to fast save" }
+				, { "helpSaveGameKey", "Press this key to save your game. Not properly tested and not really recommended.\r\nDo not use this at any scripted scene or anything like that.\r\nAlso, when you will load your fast-saved game, you will start at your home, and ambient visual effects will be shown as if you're in tha location you were at at the momet of save (e.g., if you will save outdoors, you will start in a foggy room)." +
+					"\r\n\r\nI provide a short list here, but by editing the cfg manually you can set any value that is a valid Unity KeyCode enum constant name." }
+				, { "ConfigReloadKey", "The key to reload the mod configuration" }
+				, { "helpConfigReloadKey", "Press this key to reload the configuration file. Missing values will be reset to defaults." +
+					"\r\n\r\nI provide a short list here, but by editing the cfg manually you can set any value that is a valid Unity KeyCode enum constant name." }
+
 			} },
 			{ Lang.RU, new Dictionary<string, string>() {
 				{ "boolDisabled", "Выкл" }
@@ -222,6 +243,30 @@ namespace NKN_Configurator {
 				, { "helpOrbsConstAddIfZero", "По умолчанию дополнительные шары опыта определённого типа не будут выпадать в том случае, если шары этого типа технологий не выпадают при выполнении конкретной работы." +
 					"\r\n\r\nВключите эту настройку, чтобы всегда выпадали все дополнительные шары опыта." +
 					"\r\n\r\nНапример, если после некой работы выпадают только шары силы и духа, а в настройках указано выпадение 2 дополнительных шара природы, то при выключенной данной опции вы не получите этих двух шаров природы - ведь после выполнения работы шары природы не выпадали. Но если вы включите данную опцию, то вам с любой работы, даже если при ней не падают шары природы, будут вдобавок выпадать эти два шара природы." }
+
+				, { "TimeScaleSwitchKey", "Кнопка для ускорения времени" }
+				, { "helpTimeScaleSwitchKey", "Переключает между обычной скоростбю течения времени и в десять раз увеличенной (т.е. между 'поумолч * TimeMult' и 'полумолч * TimeMult * 10')." +
+					"\r\n\r\n\r\nМожно установить любое значение, являющееся корректным именем кнопки в перечислении Unity KeyCode (чтобы получить полный список этих самых значений, загуглите «Unity KeyCode»)." }
+				, { "ResetPrayKey", "Кнопка сброса флага проведённой службы" }
+				, { "helpResetPrayKey", "Сбрасывает флаг для проверки, что уже была проведена церковная служба, позволяя прочитать молитву ещё раз (но по-прежнему только в день Гордыни)." +
+					"\r\n\r\n\r\nМожно установить любое значение, являющееся корректным именем кнопки в перечислении Unity KeyCode (чтобы получить полный список этих самых значений, загуглите «Unity KeyCode»)." }
+				, { "AddMoneyKey", "Кнопка для добавления денег" }
+				, { "helpAddMoneyKey", "Даёт вам 1 золотую монету." +
+					"\r\n\r\n\r\nМожно установить любое значение, являющееся корректным именем кнопки в перечислении Unity KeyCode (чтобы получить полный список этих самых значений, загуглите «Unity KeyCode»)." }
+
+				, { "AllowSaveEverywhere", "Разрешить быстрое сохранение" }
+				, { "helpAllowSaveEverywhere", "Позволяет сохраниться по нажатию кнопки, где угодно и когда угодно." +
+					"\r\n\r\nФункционал сохранения толком не протестирован, поэтому при использовании обязательно делайте резервные копии сохранений.\r\nНе сохраняйтесь посреди заскриптованных сцен и всего такого." +
+					"\r\nПри загрузке сохранённой таким образом игры вы начнёте игру у себя дома, но при этом в доме будут погодные визуальные эффекты (напрмер, туман), которые были в той локации, в которой вы сохранились." }
+
+				, { "SaveGameKey", "Кнопка для быстрого сохранения" }
+				, { "helpSaveGameKey", "Кнопка для быстрого сохранения." +
+					"\r\n\r\nФункционал сохранения толком не протестирован, поэтому при использовании обязательно делайте резервные копии сохранений.\r\nНе сохраняйтесь посреди заскриптованных сцен и всего такого." +
+					"\r\nПри загрузке сохранённой таким образом игры вы начнёте игру у себя дома, но при этом в доме будут погодные визуальные эффекты (напрмер, туман), которые были в той локации, в которой вы сохранились." +
+					"\r\n\r\n\r\nМожно установить любое значение, являющееся корректным именем кнопки в перечислении Unity KeyCode (чтобы получить полный список этих самых значений, загуглите «Unity KeyCode»)." }
+				, { "ConfigReloadKey", "Кнопка для перепрочтения файла конфигурации" }
+				, { "helpConfigReloadKey", "Нажмите, чтобы заново прочитать файл конфигурации этого мода." +
+					"\r\n\r\n\r\nМожно установить любое значение, являющееся корректным именем кнопки в перечислении Unity KeyCode (чтобы получить полный список этих самых значений, загуглите «Unity KeyCode»)." }
 			} }
 		};
 	}

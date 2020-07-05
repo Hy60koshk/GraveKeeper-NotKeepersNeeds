@@ -29,6 +29,7 @@
 			this.btnLangRu = new System.Windows.Forms.Button();
 			this.btnLangEn = new System.Windows.Forms.Button();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.versionLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -85,11 +86,21 @@
 			this.saveFileDialog1.FileName = "config.txt";
 			this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
 			// 
+			// versionLabel
+			// 
+			this.versionLabel.AutoSize = true;
+			this.versionLabel.Location = new System.Drawing.Point(848, 548);
+			this.versionLabel.Name = "versionLabel";
+			this.versionLabel.Size = new System.Drawing.Size(82, 13);
+			this.versionLabel.TabIndex = 5;
+			this.versionLabel.Text = "NKN Conf v.0.9";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(942, 570);
+			this.Controls.Add(this.versionLabel);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnLangRu);
@@ -110,6 +121,7 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.Label versionLabel;
 	}
 }
 
