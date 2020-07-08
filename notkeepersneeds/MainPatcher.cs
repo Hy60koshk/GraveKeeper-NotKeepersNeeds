@@ -18,9 +18,14 @@ namespace NotKeepersNeeds {
 			public KeyCode Key => key_;
 			private KeyCode key_;
 			private bool isPressed_ = false;
+			public bool AlreadyPressed => isPressed_;
 
 			public SinglePressKey(KeyCode key) {
 				key_ = key;
+			}
+			public SinglePressKey(KeyCode key, bool alreadyPressed) {
+				key_ = key;
+				isPressed_ = true;
 			}
 			public void ChangeKey(KeyCode key) {
 				key_ = key;
@@ -107,13 +112,20 @@ namespace NotKeepersNeeds {
 			public SwitchKey TimeScaleSwitchKey = new SwitchKey(KeyCode.F4);
 
 			public SinglePressKey SaveGameKey = new SinglePressKey(KeyCode.F5);
-			public SinglePressKey ConfigReloadKey = new SinglePressKey(KeyCode.F6);
+			public SinglePressKey ConfigReloadKey;// = new SinglePressKey(KeyCode.F6);
 			public SinglePressKey AddMoneyKey = new SinglePressKey(KeyCode.F2);
 			public SinglePressKey ResetPrayKey = new SinglePressKey(KeyCode.F8);
 
 			public bool HealthRegen = false;
 			public bool HealIfTired = false;
 			public float HealthRegenPerSecond = 0.5f;
+
+			public Options() {
+				ConfigReloadKey = new SinglePressKey(KeyCode.F6);
+			}
+			public Options(Options opts) {
+				ConfigReloadKey = new SinglePressKey(KeyCode.F6, opts.ConfigReloadKey.AlreadyPressed);
+			}
 
 			public int GetOrbCount(int orig, int idx) {
 				if (_OrbsHasConst && (OrbsConstAddIfZero || orig > 0)) {
@@ -171,10 +183,14 @@ namespace NotKeepersNeeds {
 			return GetOptions(false);
 		}
 		public static Options GetOptions(bool forceReload) {
-			if (options_ != null && !forceReload) {
+			if (options_ == null) {
+				options_ = new Options();
+			}
+			else if (forceReload) {
+				options_ = new Options(options_);
+			} else {
 				return options_;
 			}
-			options_ = new Options();
 
 			string cfgPath = @"./QMods/NotKeepersNeeds/config.txt";
 			if (File.Exists(cfgPath)) {
@@ -260,6 +276,12 @@ namespace NotKeepersNeeds {
 							case "ResetPrayKey":
 								try {
 									options_.ResetPrayKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
+								}
+								catch { }
+								break;
+							case "TimeScaleSwitchKey":
+								try {
+									options_.TimeScaleSwitchKey.ChangeKey(Enum<KeyCode>.Parse(rawVal));
 								}
 								catch { }
 								break;
